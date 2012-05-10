@@ -45,13 +45,9 @@ public class Events implements Listener {
 	private int getPlayerXP(Player p){
 		// player.getTotalExperience() sometimes reports the wrong XP due to a bug with enchanting not updating player's total XP.
 		// This function figures out the player's total XP based on their level and percentage to their next level. 
-		int levelXP = (int) (1.75D * Math.pow(p.getLevel(), 2.0D) + 5.0D * p.getLevel());
-		int nextLevel = p.getLevel() + 1;
-		double nextLevelXP = (1.75D * Math.pow(nextLevel, 2.0D) + 5.0D * nextLevel);
-		double totalXPNeededToLevel = nextLevelXP - levelXP;
-		double userXPNeededToLevel = totalXPNeededToLevel * p.getExp();
-		double guessedTotalXP = levelXP + userXPNeededToLevel;
-		return (int) guessedTotalXP;
+
+		double userLevel = p.getLevel() + p.getExp();
+		return (int) (1.75D * Math.pow(userLevel, 2.0D) + 5.0D * userLevel);
 	}
 	
 }
