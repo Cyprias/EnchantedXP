@@ -25,29 +25,32 @@ public class Events implements Listener {
 		int enchantXP = (int) (1.75D * Math.pow(lvlCost, 2.0D) + 5.0D * lvlCost);
 
 		//Get player's current XP.
-		int playerXP = getPlayerXP(p);
+		int playerXP = getTotalExperience(p);
 		
 		//Get how much XP player will have minus the enchant cost.
-		int adjustedXP = playerXP - enchantXP;
+		int adjustedXP = (playerXP - enchantXP);
 
-		//Clear player's XP.
-		p.setTotalExperience(0);
-		p.setLevel(0);
-		p.setExp(0.0F);
-
-		//Give player XP minus the enchant cost.
-		p.giveExp(adjustedXP);
-
+		//Set the player's exp.
+		setExp(p, adjustedXP);
+		
 		//Set event's level cost to 0 so Bukkit doesn't change player's level afterwards. 
 		event.setExpLevelCost(0);
 	}
 	
-	private int getPlayerXP(Player p){
+	public static int getTotalExperience(Player player){
 		// player.getTotalExperience() sometimes reports the wrong XP due to a bug with enchanting not updating player's total XP.
-		// This function figures out the player's total XP based on their level and percentage to their next level. 
+		double userLevel = player.getLevel() + player.getExp();
+		return (int) Math.ceil(1.75D * Math.pow(userLevel, 2.0D) + 5.0D * userLevel);
+	}
+	
+	public static void setExp(Player player, int amount){
+		//Clear player's XP.
+		player.setTotalExperience(0);
+		player.setLevel(0);
+		player.setExp(0.0F);
 
-		double userLevel = p.getLevel() + p.getExp();
-		return (int) (1.75D * Math.pow(userLevel, 2.0D) + 5.0D * userLevel);
+		//Give player XP amount. 
+		player.giveExp(amount);
 	}
 	
 }
