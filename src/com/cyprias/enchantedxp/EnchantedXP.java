@@ -11,9 +11,19 @@ public class EnchantedXP extends JavaPlugin {
 	public static String chatPrefix = "§f[§aeXP§f] ";
 	public Events events;
 	private String stPluginEnabled = "§f%s §7v§f%s §7is enabled.";
+	public VersionChecker versionChecker;
+	public Config config;
+	
 	public void onEnable() {
+		config = new Config(this);
 		this.events = new Events(this);
 		getServer().getPluginManager().registerEvents(this.events, this);
+		
+		this.versionChecker = new VersionChecker(this, "http://dev.bukkit.org/server-mods/enchantedxp/files.rss");
+		
+		if (Config.checkNewVersionOnStartup == true)
+			this.versionChecker.retreiveVersionInfo();
+		
 		info(String.format(this.stPluginEnabled, getDescription().getName(), getDescription().getVersion()));
 	}
 
