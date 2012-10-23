@@ -1,6 +1,8 @@
 package com.cyprias.enchantedxp;
 
 import java.io.File;
+import java.io.IOException;
+
 import org.bukkit.Server;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.plugin.PluginDescriptionFile;
@@ -23,6 +25,11 @@ public class EnchantedXP extends JavaPlugin {
 		
 		if (Config.checkNewVersionOnStartup == true)
 			this.versionChecker.retreiveVersionInfo();
+		
+		try {
+		    Metrics metrics = new Metrics(this);
+		    metrics.start();
+		} catch (IOException e) {}
 		
 		info(String.format(this.stPluginEnabled, getDescription().getName(), getDescription().getVersion()));
 	}
